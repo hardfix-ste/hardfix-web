@@ -813,17 +813,10 @@ r.innerHTML=
 '<strong>Orden no encontrada</strong><br>'+
 'Verificá el número ingresado o comunicate con HardFix.'
 }
-  
+}
+
 function abrirAdmin(){
-  const modal=document.getElementById('loginModal');
-  if(!modal)return;
-  modal.style.display='flex';
-
-  const error=document.getElementById('loginError');
-  if(error)error.style.display='none';
-
-  const email=document.getElementById('loginEmail');
-  if(email)email.focus();
+window.open(location.href.split('?')[0]+'?admin=1','hardfixAdmin')
 }
 
 function cerrarLogin(){
