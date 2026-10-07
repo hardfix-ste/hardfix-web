@@ -816,7 +816,17 @@ r.innerHTML=
 }
 
 function abrirAdmin(){
-window.open(location.href.split('?')[0]+'?admin=1','hardfixAdmin')
+  const modal=document.getElementById('loginModal');
+  if(!modal)return;
+
+  modal.style.display='flex';
+
+  const error=document.getElementById('loginError');
+  if(error)error.style.display='none';
+
+  const email=document.getElementById('loginEmail');
+  if(email)email.focus();
+}
 }
 
 function cerrarLogin(){
