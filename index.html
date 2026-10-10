@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111318">
+<link rel="manifest" href="./manifest.webmanifest">
+<title>HardFix — Gestión móvil</title>
+<style>
+@import url('https://fonts.cdnfonts.com/css/harabara');
+@font-face{font-family:Harabara;src:url('https://fonts.cdnfonts.com/s/14864/Harabara.woff') format('woff');font-weight:400;font-style:normal;font-display:swap}
+:root{color-scheme:light dark;--bg:light-dark(#f5f6f8,#0b0d10);--surface:light-dark(#fff,#15181d);--surface2:light-dark(#f0f2f5,#1c2026);--text:light-dark(#111318,#f4f5f7);--muted:light-dark(#69707d,#9ba3b1);--border:light-dark(#e3e6eb,#292e36);--accent:light-dark(#111,#fff);--accentText:light-dark(#fff,#111);--ok:light-dark(#16834b,#48c989);--warn:light-dark(#a66500,#f0b45b);}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Harabara,sans-serif}.app{min-height:100vh;background:var(--bg)}
+header{padding:22px 18px 12px;display:flex;align-items:center;justify-content:space-between}.brand{font-weight:900;letter-spacing:-.6px;font-size:23px}.brand span{font-weight:900;color:var(--text)}.avatar{width:38px;height:38px;border:1px solid var(--border);border-radius:50%;display:grid;place-items:center;font-weight:800}
+main{max-width:760px;margin:auto;padding:0 16px 96px}.hello{color:var(--muted);font-size:14px;margin:4px 0 16px}.title{font-size:30px;font-weight:850;letter-spacing:-1px;margin:0 0 18px}.search{display:flex;gap:9px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 14px;margin-bottom:18px}.search input{border:0;outline:0;background:transparent;color:var(--text);width:100%;font-size:15px}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:22px}.stat{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:15px}.stat b{font-size:25px;display:block}.stat small{color:var(--muted);font-size:12px}.sectionHead{display:flex;justify-content:space-between;align-items:center;margin:12px 2px}.sectionHead h2{font-size:17px;margin:0}.link{font-size:13px;color:var(--muted)}.job{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:15px;margin:9px 0;cursor:pointer}.jobTop{display:flex;justify-content:space-between;gap:12px}.jobId{font-weight:800;font-size:14px}.jobName{font-weight:750;margin-top:5px}.jobDevice{color:var(--muted);font-size:13px;margin-top:3px}.pill{font-size:11px;font-weight:750;padding:6px 8px;border-radius:999px;background:var(--surface2);white-space:nowrap}.pill.ok{color:var(--ok)}.pill.warn{color:var(--warn)}.jobBottom{display:flex;justify-content:space-between;margin-top:13px;padding-top:11px;border-top:1px solid var(--border);font-size:12px;color:var(--muted)}.money{font-weight:800;color:var(--text)}.socialLinks{display:flex;justify-content:center;gap:12px;padding:14px 0 22px}.socialLinks a{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--text);background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 14px;font-size:13px}
+nav{position:fixed;left:0;right:0;bottom:0;background:light-dark(rgba(255,255,255,.94),rgba(15,17,21,.95));backdrop-filter:blur(14px);border-top:1px solid var(--border);display:flex;justify-content:center}.navin{width:min(760px,100%);display:grid;grid-template-columns:repeat(4,1fr);padding:9px 8px calc(9px + env(safe-area-inset-bottom))}.navbtn{background:transparent;border:0;color:var(--muted);font-size:11px;padding:7px;cursor:pointer}.navbtn.active{color:var(--text)}.navbtn strong{display:block;font-size:18px;margin-bottom:2px;color:var(--text)}.fab{position:fixed;right:20px;bottom:84px;border:0;border-radius:16px;background:var(--accent);color:var(--accentText);width:52px;height:52px;font-size:25px;box-shadow:0 10px 28px #0003;cursor:pointer}
+.modal{display:none;position:fixed;inset:0;background:#0008;align-items:flex-end;justify-content:center}.modal.show{display:flex}.sheet{width:min(760px,100%);background:var(--surface);border-radius:22px 22px 0 0;padding:20px 18px 30px}.sheet h2{margin:0 0 16px}.field{margin:10px 0}.field label{font-size:12px;color:var(--muted);display:block;margin-bottom:5px}.field input,.field select{width:100%;padding:12px;border:1px solid var(--border);border-radius:12px;background:var(--surface2);color:var(--text)}.actions{display:flex;gap:10px;margin-top:16px}.actions button{flex:1;padding:13px;border-radius:12px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-weight:750}.actions .primary{background:var(--accent);color:var(--accentText)}
+.jobActions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.jobActions button{border:1px solid var(--border);background:var(--surface2);color:var(--text);border-radius:10px;padding:9px 11px;font:inherit;font-size:12px;font-weight:800;cursor:pointer}.jobActions button.primary{background:var(--accent);color:var(--accentText)}
+@media(min-width:700px){main{padding-top:18px}.job{transition:transform .15s}.job:hover{transform:translateY(-1px)}}
+@media(max-width:600px){
+body{font-family:Arial,sans-serif;font-size:17px}
+.brand{font-family:Harabara,sans-serif;font-size:28px}
+header{padding:20px 16px 14px}
+main{padding:0 14px 112px}
+.hello{font-size:16px;margin-bottom:14px}
+.title{font-size:34px;letter-spacing:-.5px;line-height:1.15}
+.search{padding:15px 14px;border-radius:15px}
+.search input{font-size:17px}
+.cards{gap:7px;margin-bottom:24px}
+.stat{padding:13px 10px;border-radius:14px}
+.stat b{font-size:25px}
+.stat small{font-size:13px;line-height:1.25;display:block;margin-top:4px}
+.sectionHead h2{font-size:19px}
+.link{font-size:15px}
+.job{padding:17px 14px;border-radius:16px;margin:11px 0}
+.jobTop{gap:8px}
+.jobId{font-size:15px}
+.jobName{font-size:18px;line-height:1.25}
+.jobDevice{font-size:15px;line-height:1.35}
+.pill{font-size:12px;padding:7px 9px}
+.jobBottom{font-size:14px;line-height:1.65;gap:8px}
+.money{font-size:15px}
+.socialLinks{gap:8px}
+.socialLinks a{font-size:15px;padding:12px}
+.navin{padding:8px 5px calc(9px + env(safe-area-inset-bottom))}
+.navbtn{font-size:13px;padding:8px 3px}
+.navbtn strong{font-size:22px}
+.fab{width:60px;height:60px;font-size:30px;right:16px;bottom:88px}
+.sheet{padding:22px 18px 34px;max-height:90dvh;overflow-y:auto}
+.sheet h2{font-size:24px}
+.field{margin:13px 0}
+.field label{font-size:14px}
+.field input,.field select{font-size:16px;padding:14px}
+.actions button{font-size:16px;padding:15px 10px}
+}
+
+/* Ajuste de legibilidad en celulares y navegadores que reportan viewport ampliado */
+@media (max-width: 1000px) {
+  header { padding: 18px 16px 14px; }
+  main { width: 100%; max-width: none; padding: 0 16px 118px; }
+  .hello { font-size: 17px; }
+  .title { font-size: clamp(32px, 4.5vw, 40px); line-height: 1.18; }
+  .search { padding: 16px; }
+  .search input { font-size: 18px; }
+  .cards { gap: 9px; }
+  .stat { padding: 15px 12px; }
+  .stat b { font-size: clamp(25px, 3.5vw, 30px); }
+  .stat small { font-size: 14px; line-height: 1.3; }
+  .sectionHead h2 { font-size: 21px; }
+  .link { font-size: 15px; }
+  .job { padding: 18px 16px; margin: 12px 0; }
+  .jobId { font-size: 16px; }
+  .jobName { font-size: 20px; line-height: 1.3; }
+  .jobDevice { font-size: 17px; line-height: 1.4; }
+  .pill { font-size: 13px; padding: 8px 10px; }
+  .jobBottom { font-size: 15px; line-height: 1.6; }
+  .money { font-size: 17px; }
+  .jobActions { gap: 9px; }
+  .jobActions button { min-height: 42px; padding: 10px 13px; font-size: 14px; }
+  .socialLinks a { font-size: 16px; padding: 13px 15px; }
+  .navin { width: 100%; padding: 10px 5px calc(12px + env(safe-area-inset-bottom)); }
+  .navbtn { font-size: 14px; padding: 9px 4px; }
+  .navbtn strong { font-size: 24px; }
+  .fab { width: 62px; height: 62px; font-size: 32px; }
+}
+
+/* Formulario móvil ampliado para facilitar la carga desde el celular */
+@media(max-width:600px){
+  .modal{align-items:stretch; padding:0; overflow:hidden;}
+  .modal.show{display:flex;}
+  .sheet{width:100%;height:100%;max-height:100dvh;overflow-y:auto;overscroll-behavior:contain;border-radius:0;padding:calc(22px + env(safe-area-inset-top)) 18px calc(24px + env(safe-area-inset-bottom));}
+  .sheet h2{font-size:27px;line-height:1.2;margin:0 0 22px;}
+  .field{margin:16px 0;}
+  .field label{font-size:15px;line-height:1.35;margin-bottom:7px;}
+  .field input,.field select{font:16px Arial,sans-serif;min-height:50px;padding:13px 14px;border-radius:13px;}
+  .field small{font-size:13px;line-height:1.4;}
+  .actions{position:sticky;bottom:calc(-1 * (24px + env(safe-area-inset-bottom)));background:var(--surface);padding:12px 0 calc(12px + env(safe-area-inset-bottom));margin:20px 0 0;}
+  .actions button{font-size:15px;min-height:50px;padding:13px 10px;}
+  #modal .sheet{padding-bottom:calc(20px + env(safe-area-inset-bottom));}
+}
+@media(min-width:601px){
+  .modal{align-items:center;padding:24px;}
+  .sheet{max-height:90vh;overflow-y:auto;border-radius:22px;padding:26px;}
+  .sheet h2{font-size:25px;}
+  .field label{font-size:14px;}
+  .field input,.field select{font-size:16px;min-height:46px;}
+}
+
+
+.admin-customer-search{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;margin:0 0 18px}
+.admin-search-title{font-size:18px;font-weight:800;margin-bottom:10px}
+.admin-search-row{display:flex;gap:9px}
+.admin-search-row input{flex:1;min-width:0;padding:14px;border:1px solid var(--border);border-radius:12px;background:var(--surface2);color:var(--text);font:inherit;font-size:16px}
+.admin-search-row button{border:1px solid var(--accent);border-radius:12px;padding:0 18px;background:var(--accent);color:var(--accentText);font:inherit;font-weight:800;cursor:pointer}
+.admin-search-message{font-size:13px;color:var(--muted);margin-top:10px;line-height:1.4}
+@media(max-width:600px){.admin-customer-search{padding:15px 13px}.admin-search-title{font-size:19px}.admin-search-row{flex-direction:column}.admin-search-row button{min-height:48px}.admin-search-row input{min-height:50px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header><div class="brand">HARD<span>FIX</span></div><div class="avatar" id="userAvatar">HF</div></header>
+<main>
+<div class="hello" id="sessionState">Gestión de reparaciones</div><h1 class="title" id="greeting">Buen día 👋</h1>
+<div class="search">⌕<input id="search" placeholder="Buscar cliente, equipo o reparación..."></div>
+<div class="cards"><div class="stat"><b id="countRepair">—</b><small>En reparación</small></div><div class="stat"><b id="countReady">—</b><small>Listos</small></div><div class="stat"><b id="totalBalance">—</b><small>Por cobrar</small></div></div>
+<section id="adminCustomerSearch" class="admin-customer-search" style="display:none" aria-label="Búsqueda de órdenes por cliente">
+  <div class="admin-search-title">Buscar órdenes de un cliente</div>
+  <div class="admin-search-row"><input id="adminCustomerQuery" type="search" autocomplete="off" placeholder="Nombre, apellido o teléfono del cliente"><button id="adminCustomerSearchBtn" type="button">Buscar</button></div>
+  <div id="adminCustomerSearchMessage" class="admin-search-message">Disponible solo con la sesión de administrador iniciada.</div>
+</section>
+<div class="sectionHead"><h2>Reparaciones recientes</h2><span class="link" id="authAction">Iniciar sesión</span></div>
+<div id="jobs"></div>
+<div class="socialLinks"><a href="https://www.instagram.com/fixhard/" target="_blank" rel="noopener noreferrer" aria-label="Instagram de HardFix">◎ Instagram</a><a href="https://www.facebook.com/share/19aU1HXHWT/" target="_blank" rel="noopener noreferrer" aria-label="Facebook de HardFix">f Facebook</a></div>
+</main>
+<button class="fab" id="add" title="Agregar nueva reparación">+</button>
+<nav><div class="navin"><button class="navbtn active" data-screen="home"><strong>⌂</strong>Inicio</button><button class="navbtn" data-screen="repairs"><strong>🔧</strong>Reparaciones</button><button class="navbtn" data-screen="clients"><strong>👥</strong>Clientes</button><button class="navbtn" data-screen="cash"><strong>💰</strong>Caja</button></div></nav>
+<div class="modal" id="modal"><div class="sheet"><h2>Nueva reparación</h2><div class="field"><label>Cliente</label><input id="newCustomer" placeholder="Nombre y apellido"></div><div class="field"><label>Teléfono</label><input id="newPhone" placeholder="11 1234-5678" inputmode="tel"></div><div class="field"><label>Email</label><input id="newEmail" type="email" placeholder="cliente@email.com"></div><div class="field"><label>Tipo de ingreso</label><select id="newIntakeType"><option>Reparación</option><option>Garantía</option><option>Servicio técnico</option><option>Mantenimiento</option><option>Otro</option></select></div><div class="field"><label>Equipo</label><input id="newEquipment" placeholder="Ej. iPhone 13 / Notebook Lenovo"></div><div class="field"><label>Marca</label><input id="newBrand" placeholder="Ej. Apple, Lenovo, Samsung"></div><div class="field"><label>Modelo</label><input id="newModel" placeholder="Marca y modelo"></div><div class="field"><label>Número de serie / IMEI</label><input id="newSerial" placeholder="Opcional"></div><div class="field"><label>Problema informado</label><input id="newProblem" placeholder="¿Qué falla presenta? "></div><div class="field"><label>Observaciones</label><input id="newNotes" placeholder="Accesorios, estado físico, notas... "></div><div class="field"><label>Estado</label><select id="newStatus"><option>Ingresado</option><option>En diagnóstico</option><option>Esperando repuesto</option><option>Presupuestado</option><option>Aprobado</option><option>En reparación</option><option>Listo para retirar</option><option>Entregado</option></select></div><div class="field"><label>Presupuesto</label><input id="newCost" placeholder="$ 0" inputmode="numeric"></div><div class="field"><label>Seña / pago</label><input id="newPaid" placeholder="$ 0" inputmode="numeric"></div><div class="field"><label>Fecha de entrega estimada</label><input id="newDue" type="date"></div><div class="field"><label>Fecha de entrega real</label><input id="newDelivered" type="date"><small id="warrantyPreview" style="display:block;color:var(--muted);margin-top:6px">Garantía hasta: ingresá la fecha de entrega real</small></div><div class="actions"><button id="close">Cancelar</button><button class="primary" id="save">Guardar reparación</button></div></div></div>
+<div class="modal" id="loginModal"><div class="sheet"><h2>Acceso HardFix</h2><div class="field"><label>Email</label><input id="loginEmail" type="email" autocomplete="username" placeholder="Email de administración"></div><div class="field"><label>Contraseña</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Contraseña"></div><div class="actions"><button id="loginClose">Cancelar</button><button class="primary" id="loginSave">Ingresar</button></div></div></div>
+<script>
+const SUPABASE_URL='https://owrihoyixmflhuudbifj.supabase.co';
+const SUPABASE_KEY='sb_publishable_H05n5jOBVTTysU1DXWsBTQ_nM1DPCk_';
+let currentRows=[];let session=null;
+const data=[{id:'#HF-1602',name:'',device:'PC Gamer · HardFix Custom',status:'En reparación',tone:'',money:'—',date:'05/10/2026'},{id:'#HF-1548',name:'Nicolás Carlos',device:'Notebook · Lenovo IdeaPad',status:'Aprobado',tone:'',money:'$60.000',date:'Sin fecha'}];
+const jobs=document.querySelector('#jobs');
+function money(v){return v==null||v===''?'—':new Intl.NumberFormat('es-AR',{style:'currency',currency:'ARS',maximumFractionDigits:0}).format(Number(v))}
+function addDays(dateString,days){if(!dateString)return '';const d=new Date(dateString+'T12:00:00');d.setDate(d.getDate()+days);return d.toISOString().slice(0,10)}
+function formatDate(dateString){return dateString?new Date(dateString+'T12:00:00').toLocaleDateString('es-AR'):'Sin fecha'}
+function normalize(x){const delivered=x.delivered_at||x.delivery_date;return {id:'#'+x.order_number,name:x.customer_name||'Cliente sin nombre',phone:x.phone||'',email:x.email||'',device:[x.equipment,x.brand_model].filter(Boolean).join(' · ')||'Equipo sin detalle',equipment:x.equipment||'',brandModel:x.brand_model||'',serial:x.serial_number||'',problem:x.reported_problem||'',notes:x.notes||'',status:x.status||'Recibido',tone:x.status==='Listo para retirar'?'ok':(x.status==='Presupuestado'?'warn':''),money:money(x.balance ?? x.cost),cost:Number(x.cost)||0,paid:Number(x.paid)||0,balance:Number(x.balance ?? ((Number(x.cost)||0)-(Number(x.paid)||0)))||0,date:formatDate(x.received_at),receivedAt:x.received_at||'',deliveryDate:formatDate(delivered||x.estimated_delivery),deliveredAt:delivered||'',warrantyUntil:delivered?(x.warranty_until?formatDate(x.warranty_until):formatDate(addDays(delivered,30))):'Pendiente de entrega',intakeType:x.intake_type||'Reparación'} }
+function escapeHTML(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function printDocument(row,type){const isReceipt=type==='receipt';const total=Number(row.cost)||0;const paid=Number(row.paid)||0;const balance=Number(row.balance)||Math.max(0,total-paid);const title=isReceipt?'Comprobante de recepción / entrega':'Presupuesto de reparación';const rows=[['Orden',row.id],['Fecha',new Date().toLocaleDateString('es-AR')],['Cliente',row.name],['Teléfono',row.phone||'—'],['Email',row.email||'—'],['Equipo',row.equipment||row.device],['Marca / modelo',row.brandModel||'—'],['N.º de serie / IMEI',row.serial||'—'],['Falla informada',row.problem||'—'],['Observaciones',row.notes||'—'],['Estado',row.status],['Fecha de ingreso',row.date],['Entrega estimada / real',row.deliveryDate||'—']];const details=rows.map(([k,v])=>`<div class="line"><b>${escapeHTML(k)}</b><span>${escapeHTML(v)}</span></div>`).join('');const amounts=isReceipt?`<div class="amount"><span>Total del trabajo</span><b>${money(total)}</b></div><div class="amount"><span>Pagado / seña registrada</span><b>${money(paid)}</b></div><div class="amount grand"><span>Saldo pendiente</span><b>${money(balance)}</b></div><p class="note">Este documento es un comprobante interno de los importes registrados; no reemplaza una factura fiscal.</p>`:`<div class="amount"><span>Presupuesto estimado</span><b>${money(total)}</b></div><p class="note">Presupuesto sujeto a revisión y aprobación del cliente. Los trabajos adicionales se informarán antes de realizarlos.</p>`;const w=window.open('','_blank','width=800,height=900');if(!w){alert('Permití las ventanas emergentes para generar el documento.');return}w.document.write(`<!doctype html><html lang="es"><head><meta charset="utf-8"><title>${escapeHTML(title)} ${escapeHTML(row.id)}</title><style>body{font:14px Arial,sans-serif;color:#171717;max-width:760px;margin:35px auto;padding:0 28px}header{display:flex;justify-content:space-between;align-items:start;border-bottom:3px solid #d92332;padding-bottom:18px;margin-bottom:24px}.brand{font-size:28px;font-weight:900;letter-spacing:-1px}.brand span{color:#d92332}h1{font-size:22px;margin:0 0 8px}.muted{color:#666;font-size:12px}.line{display:grid;grid-template-columns:190px 1fr;gap:16px;padding:10px 0;border-bottom:1px solid #ddd;line-height:1.4}.line b{color:#444}.amount{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #ddd}.grand{font-size:18px;border-top:2px solid #222;margin-top:6px}.note{font-size:11px;color:#555;line-height:1.5;margin-top:18px}.signatures{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:65px}.signatures div{border-top:1px solid #777;padding-top:8px;font-size:11px;color:#555}@media print{body{margin:15mm auto;padding:0}button{display:none}}</style></head><body><header><div><div class="brand">HARD<span>FIX</span></div><div class="muted">Servicio Técnico Especializado</div></div><div style="text-align:right"><h1>${escapeHTML(title)}</h1><div class="muted">${escapeHTML(row.id)} · ${new Date().toLocaleDateString('es-AR')}</div></div></header>${details}${amounts}<div class="signatures"><div>Firma del cliente / conformidad</div><div>Firma y sello de HardFix</div></div><p class="muted" style="margin-top:28px">Conservá este documento como referencia de la orden de servicio.</p><script>window.onload=()=>setTimeout(()=>window.print(),250)<\/script><script>if('serviceWorker' in navigator && location.protocol==='https:'){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(error=>console.error('No se pudo registrar el service worker de HardFix:',error)));}</script></body></html>`);w.document.close()}
+function render(q='',rows=data){const filtered=rows.filter(x=>(x.name+x.device+x.id+x.status+(x.intakeType||'')).toLowerCase().includes(q.toLowerCase()));jobs.innerHTML=filtered.map((x,i)=>`<div class="job"><div class="jobTop"><div><div class="jobId">${escapeHTML(x.id)}</div><div class="jobName">${escapeHTML(x.name)}</div><div class="jobDevice">${escapeHTML(x.device)}</div><div class="jobDevice">Ingreso: ${escapeHTML(x.intakeType||'Reparación')}</div></div><span class="pill ${x.tone}">${escapeHTML(x.status)}</span></div><div class="jobBottom"><span>Ingreso: ${escapeHTML(x.date)}<br>Entrega: ${escapeHTML(x.deliveryDate||'Sin fecha')}<br>Garantía hasta: ${escapeHTML(x.warrantyUntil||'Pendiente de entrega')}</span><span class="money">${escapeHTML(x.money)}</span></div><div class="jobActions"><button class="primary" data-doc="budget" data-index="${i}">Generar presupuesto PDF</button><button data-doc="receipt" data-index="${i}">Comprobante PDF</button></div></div>`).join('')||'<div class="job">No encontramos reparaciones.</div>';jobs.querySelectorAll('[data-doc]').forEach(btn=>btn.onclick=()=>printDocument(filtered[Number(btn.dataset.index)],btn.dataset.doc==='receipt'?'receipt':'budget'))}
+function updateStats(rows){document.querySelector('#countRepair').textContent=rows.filter(x=>x.status==='En reparación').length;document.querySelector('#countReady').textContent=rows.filter(x=>x.status==='Listo para retirar').length;const n=rows.reduce((s,x)=>s+(Number(x.balance)||0),0);document.querySelector('#totalBalance').textContent=money(n)}
+function showScreen(screen){document.querySelectorAll('.navbtn').forEach(b=>b.classList.toggle('active',b.dataset.screen===screen));const title=document.querySelector('#greeting'),head=document.querySelector('.sectionHead h2'),search=document.querySelector('#search');if(screen==='home'){title.textContent='Buen día 👋';head.textContent='Reparaciones recientes';render(search.value,currentRows);return}search.value='';if(screen==='repairs'){title.textContent='Reparaciones';head.textContent='Todas las reparaciones';render('',currentRows);return}if(screen==='clients'){title.textContent='Clientes';head.textContent='Clientes registrados';const names=[...new Set(currentRows.map(x=>x.name).filter(Boolean))];jobs.innerHTML=names.length?names.map(n=>'<div class="job"><div class="jobName">'+n+'</div><div class="jobDevice">'+currentRows.filter(x=>x.name===n).length+' reparación(es)</div></div>').join(''):'<div class="job">Todavía no hay clientes registrados.</div>';return}title.textContent='Caja';head.textContent='Resumen de caja';const total=currentRows.reduce((s,x)=>s+(Number(String(x.money).replace(/[^0-9-]/g,''))||0),0);jobs.innerHTML='<div class="job"><div class="jobName">Total registrado</div><div class="money">'+money(total)+'</div></div><div class="job"><div class="jobName">Por cobrar</div><div class="money">'+document.querySelector('#totalBalance').textContent+'</div></div>'}
+async function auth(path,opts={}){return fetch(SUPABASE_URL+path,{...opts,headers:{apikey:SUPABASE_KEY,Authorization:'Bearer '+(session?.access_token||SUPABASE_KEY),'Content-Type':'application/json',...(opts.headers||{})}})}
+function setSession(s){session=s;const logged=!!s;document.querySelector('#sessionState').textContent=logged?'Sesión de administración activa':'Modo operativo';document.querySelector('#greeting').textContent=logged?'Buen día, HardFix 👋':'Buen día 👋';document.querySelector('#authAction').textContent=logged?'Cerrar sesión':'Iniciar sesión';document.querySelector('#add').style.display='block';const adminSearch=document.querySelector('#adminCustomerSearch');if(adminSearch)adminSearch.style.display=logged?'block':'none';if(!logged){const q=document.querySelector('#adminCustomerQuery');if(q)q.value='';const msg=document.querySelector('#adminCustomerSearchMessage');if(msg)msg.textContent='Disponible solo con la sesión de administrador iniciada.'}}
+async function login(){document.querySelector('#loginModal').classList.add('show');document.querySelector('#loginEmail').focus()}
+async function doLogin(){const email=document.querySelector('#loginEmail').value.trim();const password=document.querySelector('#loginPassword').value;if(!email||!password){alert('Completá email y contraseña.');return}const r=await auth('/auth/v1/token?grant_type=password',{method:'POST',body:JSON.stringify({email,password})});if(!r.ok){let msg='No se pudo iniciar sesión. Revisá el email y la contraseña.';try{const e=await r.json();if(e.msg)msg=e.msg}catch{}alert(msg);return}setSession(await r.json());document.querySelector('#loginModal').classList.remove('show');document.querySelector('#loginPassword').value='';await loadRepairs()}
+async function loadRepairs(){try{const r=await auth('/rest/v1/repair_orders?select=*&order=updated_at.desc');if(!r.ok){const err=await r.text();throw new Error(err)}currentRows=(await r.json()).map(normalize);render('',currentRows);updateStats(currentRows)}catch(e){currentRows=data;render('',data);updateStats(data)}}
+async function searchCustomerOrders(){
+ const input=document.querySelector('#adminCustomerQuery');const message=document.querySelector('#adminCustomerSearchMessage');const term=input.value.trim();
+ if(!session?.access_token){message.textContent='Iniciá sesión como administrador para buscar en la base de datos.';return}
+ if(!term){message.textContent='Escribí un nombre, apellido o número de teléfono.';input.focus();return}
+ message.textContent='Buscando órdenes en la base de datos…';
+ try{
+  const safe=term.replace(/[,*()]/g,' ').trim();
+  if(!safe){message.textContent='Ingresá un texto de búsqueda válido.';return}
+  const params=new URLSearchParams({select:'*',or:`(customer_name.ilike.*${safe}*,phone.ilike.*${safe}*)`,order:'updated_at.desc',limit:'500'});
+  const r=await auth('/rest/v1/repair_orders?'+params.toString());
+  if(!r.ok){const detail=await r.text();throw new Error(detail||'No se pudo consultar Supabase.')}
+  const matches=(await r.json()).map(normalize);
+  document.querySelector('#greeting').textContent='Resultados de búsqueda';
+  document.querySelector('.sectionHead h2').textContent='Órdenes del cliente';
+  document.querySelector('#search').value='';
+  render('',matches);
+  message.textContent=`Se encontraron ${matches.length} orden(es) para “${term}”. Podés abrir sus presupuestos o comprobantes desde cada resultado.`;
+ }catch(err){console.error('Búsqueda de órdenes HardFix:',err);message.textContent='No se pudo completar la búsqueda. Verificá la conexión y los permisos de administrador de Supabase.'}
+}
+
+const dueInput=document.querySelector('#newDue');const deliveredInput=document.querySelector('#newDelivered');const warrantyPreview=document.querySelector('#warrantyPreview');function refreshWarrantyPreview(){const w=addDays(deliveredInput.value,30);warrantyPreview.textContent='Garantía hasta: '+(w?formatDate(w):'ingresá la fecha de entrega real')}deliveredInput.addEventListener('input',refreshWarrantyPreview);render();updateStats(data);setSession(null);loadRepairs();document.querySelector('#search').oninput=e=>render(e.target.value,currentRows);document.querySelector('#adminCustomerSearchBtn').onclick=searchCustomerOrders;document.querySelector('#adminCustomerQuery').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();searchCustomerOrders()}});document.querySelectorAll('.navbtn').forEach(b=>b.onclick=()=>showScreen(b.dataset.screen));document.querySelector('#authAction').onclick=()=>{if(session){session=null;setSession(null);loadRepairs()}else login()};const modal=document.querySelector('#modal');const loginModal=document.querySelector('#loginModal');document.querySelector('#add').onclick=()=>modal.classList.add('show');document.querySelector('#close').onclick=()=>modal.classList.remove('show');document.querySelector('#loginClose').onclick=()=>loginModal.classList.remove('show');document.querySelector('#loginSave').onclick=doLogin;document.querySelector('#loginPassword').onkeydown=e=>{if(e.key==='Enter')doLogin()};document.querySelectorAll('.modal').forEach(m=>m.onclick=e=>{if(e.target===m)m.classList.remove('show')});document.querySelector('#save').onclick=async()=>{if(!session){loginModal.classList.add('show');return}const cost=Number(document.querySelector('#newCost').value.replace(/[^0-9]/g,''))||0;const paid=Number(document.querySelector('#newPaid').value.replace(/[^0-9]/g,''))||0;const payload={customer_name:document.querySelector('#newCustomer').value.trim()||null,phone:document.querySelector('#newPhone').value.trim()||null,email:document.querySelector('#newEmail').value.trim()||null,intake_type:document.querySelector('#newIntakeType').value,equipment:document.querySelector('#newEquipment').value.trim()||null,brand:document.querySelector('#newBrand').value.trim()||null,brand_model:document.querySelector('#newModel').value.trim()||null,serial_number:document.querySelector('#newSerial').value.trim()||null,reported_problem:document.querySelector('#newProblem').value.trim()||null,notes:document.querySelector('#newNotes').value.trim()||null,status:document.querySelector('#newStatus').value,cost:cost||null,paid:paid||null,balance:Math.max(0,cost-paid),estimated_delivery:dueInput.value||null,delivered_at:deliveredInput.value||null,warranty_until:addDays(deliveredInput.value,30)||null,received_at:new Date().toISOString().slice(0,10)};const r=await auth('/rest/v1/repair_orders',{method:'POST',headers:{Prefer:'return=minimal'},body:JSON.stringify(payload)});if(!r.ok){let msg='No se pudo guardar la reparación. Puede faltar una columna en la base de datos: ';try{const e=await r.json();if(e.message)msg+=e.message}catch{}alert(msg);return}modal.classList.remove('show');['newCustomer','newPhone','newEmail','newEquipment','newBrand','newModel','newSerial','newProblem','newNotes','newCost','newPaid','newDue','newDelivered'].forEach(id=>document.querySelector('#'+id).value='');document.querySelector('#newIntakeType').value='Reparación';refreshWarrantyPreview();await loadRepairs()};
+</script>
+<script>
+// Mantiene la identidad visual de HardFix en los documentos imprimibles.
+printDocument = function(row,type){const isReceipt=type==='receipt';const total=Number(row.cost)||0;const paid=Number(row.paid)||0;const balance=Number(row.balance)||Math.max(0,total-paid);const title=isReceipt?'Comprobante de recepción / entrega':'Presupuesto de reparación';const rows=[['Orden',row.id],['Fecha',new Date().toLocaleDateString('es-AR')],['Cliente',row.name],['Teléfono',row.phone||'—'],['Email',row.email||'—'],['Equipo',row.equipment||row.device],['Marca / modelo',row.brandModel||'—'],['N.º de serie / IMEI',row.serial||'—'],['Falla informada',row.problem||'—'],['Observaciones',row.notes||'—'],['Estado',row.status],['Fecha de ingreso',row.date],['Entrega estimada / real',row.deliveryDate||'—']];const details=rows.map(([k,v])=>`<div class="line"><b>${escapeHTML(k)}</b><span>${escapeHTML(v)}</span></div>`).join('');const amounts=isReceipt?`<div class="amount"><span>Total del trabajo</span><b>${money(total)}</b></div><div class="amount"><span>Pagado / seña registrada</span><b>${money(paid)}</b></div><div class="amount grand"><span>Saldo pendiente</span><b>${money(balance)}</b></div><p class="note">Este documento es un comprobante interno de los importes registrados; no reemplaza una factura fiscal.</p>`:`<div class="amount"><span>Presupuesto estimado</span><b>${money(total)}</b></div><p class="note">Presupuesto sujeto a revisión y aprobación del cliente. Los trabajos adicionales se informarán antes de realizarlos.</p>`;const w=window.open('','_blank','width=800,height=900');if(!w){alert('Permití las ventanas emergentes para generar el documento.');return}w.document.write(`<!doctype html><html lang="es"><head><meta charset="utf-8"><title>${escapeHTML(title)} ${escapeHTML(row.id)}</title><style>@import url('https://fonts.cdnfonts.com/css/harabara');@font-face{font-family:Harabara;src:url('https://fonts.cdnfonts.com/s/14864/Harabara.woff') format('woff');font-weight:400;font-style:normal;font-display:swap}body{font:14px Harabara,Arial,sans-serif;color:#171717;max-width:760px;margin:35px auto;padding:0 28px}header{display:flex;justify-content:space-between;align-items:start;border-bottom:3px solid #d92332;padding-bottom:18px;margin-bottom:24px}.brand{font-family:Harabara,Arial,sans-serif;font-size:28px;font-weight:900;letter-spacing:-1px;color:#171717}.brand span{color:#171717;font-weight:900}h1{font-size:22px;margin:0 0 8px}.muted{color:#666;font-size:12px}.line{display:grid;grid-template-columns:190px 1fr;gap:16px;padding:10px 0;border-bottom:1px solid #ddd;line-height:1.4}.line b{color:#444}.amount{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #ddd}.grand{font-size:18px;border-top:2px solid #222;margin-top:6px}.note{font-size:11px;color:#555;line-height:1.5;margin-top:18px}.signatures{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:65px}.signatures div{border-top:1px solid #777;padding-top:8px;font-size:11px;color:#555}@media print{body{margin:15mm auto;padding:0}button{display:none}}</style></head><body><header><div><div class="brand">HARD<span>FIX</span></div><div class="muted">Servicio Técnico Especializado</div></div><div style="text-align:right"><h1>${escapeHTML(title)}</h1><div class="muted">${escapeHTML(row.id)} · ${new Date().toLocaleDateString('es-AR')}</div></div></header>${details}${amounts}<div class="signatures"><div>Firma del cliente / conformidad</div><div>Firma y sello de HardFix</div></div><p class="muted" style="margin-top:28px">Conservá este documento como referencia de la orden de servicio.</p><script>window.onload=()=>setTimeout(()=>window.print(),250)<\/script></body></html>`);w.document.close()};
+</script>
+</div></body></html>
